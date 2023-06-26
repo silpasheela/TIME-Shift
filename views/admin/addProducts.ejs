@@ -1,0 +1,111 @@
+<%- include ('../layouts/adminHeader.ejs') %>
+
+<div style="background-image: url(/assets/img/11852424_4853433.jpg);">
+
+
+        <h4 class="text-center text-dark my-5"> Add Product</h4>
+        <h3 style="color: red;text-align: center;">
+            <%=message%>
+        </h3>
+        <form action="/admin/add-product" method="post" style="margin-left: 15%;width: 50%;"
+            enctype="multipart/form-data">
+            <fieldset>
+                <!-- Text input-->
+
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="product_name">Name</label>
+                    <br>
+                    <input id="product_name" name="pName" placeholder="Name" class="form-control input-md highlight"
+                        required="" type="text">
+
+                    <!-- Text input-->
+                    <label class="col-md-4 control-label" for="product_name">Stock</label>
+                    <br>
+                    <input id="product_name" name="pStock" placeholder="Stock" class="form-control input-md highlight"
+                        required="" type="number">
+
+
+                    <label class="col-md-4 control-label" for="product_name">Category</label>
+                    <br>
+                    <select class="form-select border-white" id="exampleFormControlSelect1"
+                        aria-label="Default select example" aria-placeholder="" name="pCategory">
+                        <option disabled selected>select any category</option>
+                        <% if(category){ %>
+                            <% for(let i=1;i <=category.length; i++){ %>
+                                <option value="<%= category[i-1].name %>">
+                                    <%= category[i-1].name %>
+                                </option>
+                                <% } %>
+                                    <% }else{ %>
+                                        <h1>No Categories to add</h1>
+                                        <% } %>
+                    </select><br>
+
+
+
+                    <!-- Text input-->
+                    <label class="col-md-4 control-label" for="product_name">Description</label>
+                    <br>
+                    <input id="product_name" name="pDescription" placeholder="Enter Description"
+                        class="form-control input-md highlight" required="" type="text">
+
+                    <!-- Text input-->
+                    <label class="col-md-4 control-label" for="product_name">Price</label>
+                    <br>
+                    <input id="product_name" name="pPrice" placeholder="Enter actual price"
+                        class="form-control input-md highlight" required="" type="number">
+
+                        <!-- <button type="button" id="generateButton" class="btn btn-primary">Generate</button> -->
+
+                    <!-- Text input-->
+                    <!-- <label class="col-md-4 control-label" for="product_name">Offer price</label>
+                    <br>
+                    <input id="product_name" name="pRating" placeholder="Offer price"
+                        class="form-control input-md highlight" required="" type="number"> -->
+
+
+                    <!-- File Button -->
+                    <label for="filebutton">Choose image</label>
+                    <br>
+                    
+                    <input id="filebutton" name="pImage" class="input-file" type="file" required multiple
+                        accept="image/*">
+
+
+                    <!-- Button -->
+                    <div style="margin-left: 25%;" class="my-3">
+                        <button type="submit" id="singlebutton" name="singlebutton"
+                            class="btn btn-success">Add</button>
+                        <a href="/admin/product"><button type="button" id="singlebutton" name="singlebutton"
+                                class="btn btn-primary">Go back</button></a>
+                    </div>
+
+            </fieldset>
+        </form>
+
+    </div>
+
+
+        <style>
+            .highlight {
+                border-color: aliceblue;
+                margin-top: 2%;
+                margin-bottom: 2%;
+            }
+        </style>
+
+
+<script>
+    document.getElementById('generateButton').addEventListener('click', function () {
+  const pPrice = parseFloat(document.getElementById('pPrice').value);
+  const discountPercentage = parseFloat(document.getElementById('pCategory').value);
+  const pRating = pPrice - (pPrice * discountPercentage / 100);
+
+  document.getElementById('pRating').value = pRating.toFixed(2); // Assuming you want to display the offer price with 2 decimal places
+});
+
+  </script>
+
+        <%- include ('../layouts/adminFooter.ejs') %>

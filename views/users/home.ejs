@@ -1,0 +1,338 @@
+
+
+
+<%- include('../layouts/header.ejs') %>
+
+    <!-- Modal -->
+   
+
+    <div class="page" style="background-color: black;">
+
+    <!-- Start Banner Hero -->
+    
+    <% if(banner) {%>   
+
+        <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+                <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active" style="background-color: black;">
+                    <div class="container">
+                        <div class="row p-5">
+                            <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                                <img class="img-fluid" src="/uploads/<%=banner.image[0]%>" alt="">
+                            </div>
+                            <div class="col-lg-6 mb-0 d-flex align-items-center">
+                                <div class="text-align-left align-self-center">
+                                    <h1 class="h1 text" style="color: #f1f179;"><b>Time-Shift Watch Paradise</b> </h1>
+                                <h3 class="h2"  style="color: rgb(248, 248, 165);">New Time Destination</h3>
+                                <p style="color: rgb(125, 125, 99);">
+                                    "A minute spent complaining is a minute wasted. Instead, cherish every second and make the most of it." 
+                                </p>
+                                     <p style="color: rgb(125, 125, 99);"><%=banner.description%></p>
+                                <a class="btn btn-outline-light  btn-white py-2 px-4 mt-3 animate__animated animate__fadeInUp"
+                                        href="/loadShop">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% for(i=1;i<=banner.image.length;i++){%>
+                <div class="carousel-item" style="background-color: black;">
+                    <div class="container">
+                        <div class="row p-5">
+                            <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                                <img class="img-fluid" src="/uploads/<%=banner.image[i]%>" alt="">
+                            </div>
+                            <div class="col-lg-6 mb-0 d-flex align-items-center">
+                                <div class="text-align-left">
+                                 <h1 class="h1 text" style="color: #f1f179;"><b>Premium Watches for the</b> Premium Look</h1>
+                                <h3 class="h2"  style="color: rgb(248, 248, 165);">Prominent Collections</h3>
+                                <p  style="color: rgb(125, 125, 99);">
+                                    Shop our newest styles to keep you looking cute and warm for the rest of the season !
+                                </p>
+                                    <p style="color: rgb(125, 125, 99);"><%=banner.description%></p>
+                                <a class="btn btn-outline-light btn- py-2 px-4 mt-3 animate__animated animate__fadeInUp"
+                                        href="/loadShop">Explore More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item" style="background-color: black;">
+                    <div class="container">
+                        <div class="row p-5">
+                            <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                                <img class="img-fluid" src="/uploads/<%=banner.image[i+1]%>" alt="">
+                            </div>
+                            <div class="col-lg-6 mb-0 d-flex align-items-center">
+                                <div class="text-align-left">
+                                <h1 class="h1 text" style="color: #f1f179;"><b>Get Yourself a watch that reflects your</b> Style !</h1>
+                                <h3 class="h2"  style="color: rgb(248, 248, 165);">Clear your mind of "I Can't"</h3>
+                                <p  style="color: rgb(125, 125, 99);">
+                                    An exquisite statement of fashion & quirk, introducing a range of watches to turn the eyeballs wherever you go.  
+                                </p>
+                                <p style="color: rgb(125, 125, 99);"><%=banner.description%></p>
+                                <a class="btn btn-outline-light btn- py-2 px-4 mt-3 animate__animated animate__fadeInUp "
+                                        href="/loadShop">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    <% } }
+
+    else { %>
+
+    <div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="background-color: black;">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="/assets/img/xd.png" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left align-self-center">
+                                <h1 class="h1 text" style="color: #f1f179;"><b>Time-Shift Watch Paradise</b> </h1>
+                                <h3 class="h2"  style="color: rgb(248, 248, 165);">New Time Destination</h3>
+                                <p style="color: rgb(125, 125, 99);">
+                                    "A minute spent complaining is a minute wasted. Instead, cherish every second and make the most of it." 
+                                </p>
+                                <a class="btn btn-outline-light  btn-white py-2 px-4 mt-3 animate__animated animate__fadeInUp"
+                                        href="/loadShop">Shop Now</a>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background-color: black;">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="/assets/img/wallpaperflare.com_wallpaper__1_-removebg-preview.png" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                 <h1 class="h1 text" style="color: #f1f179;"><b>Premium Watches for the</b> Premium Look</h1>
+                                <h3 class="h2"  style="color: rgb(248, 248, 165);">Prominent Collections</h3>
+                                <p  style="color: rgb(125, 125, 99);">
+                                    Shop our newest styles to keep you looking cute and warm for the rest of the season !
+                                </p>
+                                <a class="btn btn-outline-light btn- py-2 px-4 mt-3 animate__animated animate__fadeInUp"
+                                        href="/loadShop">Explore More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item" style="background-color: black;">
+                <div class="container">
+                    <div class="row p-5">
+                        <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                            <img class="img-fluid" src="/assets/img/3r__2_-removebg-preview.png" alt="">
+                        </div>
+                        <div class="col-lg-6 mb-0 d-flex align-items-center">
+                            <div class="text-align-left">
+                                <h1 class="h1 text" style="color: #f1f179;"><b>Get Yourself a watch that reflects your</b> Style !</h1>
+                                <h3 class="h2"  style="color: rgb(248, 248, 165);">Clear your mind of "I Can't"</h3>
+                                <p  style="color: rgb(125, 125, 99);">
+                                    An exquisite statement of fashion & quirk, introducing a range of watches to turn the eyeballs wherever you go.  
+                                  </p>
+                                <a class="btn btn-outline-light btn- py-2 px-4 mt-3 animate__animated animate__fadeInUp "
+                                        href="/loadShop">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+    </div>
+    <%}%>
+
+
+    <section>
+        <div id="video-section">
+            <video id="my-video" src="/assets/img/FSL5584871_SU23_0515_FILM01_WITHOUT_16X9_video-med (online-video-cutter.com).mp4" autoplay muted loop></video>
+            <div class="text-overlay">
+                <h1 class="text-center text-lg-left" style="color: rgb(244, 244, 246);">
+                    "Embrace the <span style="color: rgb(203, 89, 24);">Time-Shift</span> Where Your Style and Values Unite with Every Ticking Moment."
+                </h1>
+            </div>
+        </div>
+    </section>
+
+
+
+      <section class="section-gap" style="background-image: url(/assets/img/bg-reg4.jpg);">
+        <div class="row text-center pt-3">
+            <div class="col-lg-6 m-auto">
+               <!-- <h1 class="h1" style="color: rgb(0, 0, 0); font-family: Georgia, 'Times New Roman', Times, serif;"><b>TOP BRANDS</b></h1> -->
+               <h1 class="h1" style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;"><b>TOP BRANDS</b></h1> 
+               <p  style="color: aliceblue;">
+                    "A Premium Watch is not just an Accessory, it's a Symbol of Craftsmanship and Excellence."  
+                  </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-4 p-5 mt-3">
+              <a href="/loadShop?category=4">
+                <video class="img-fluid border" src="/assets/img/Quirky Watches For Quirky Daters.mp4" style="border-radius: 10px;" autoplay muted loop></video>
+              </a>
+              <a class="btn btn-outline-dark btn-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" style="border-radius: 50px;"
+                href="/loadShop?category=4"><strong>FASTRACK</strong></a>
+            </div>
+            <div class="col-12 col-md-4 p-5 mt-3">
+              <a href="/loadShop?category=3">
+                <video class="img-fluid border" src="/assets/img/The new Rolex Day-Date.mp4" style="border-radius: 10px;" autoplay muted loop></video>
+              </a>
+              <a class="btn btn-outline-dark btn-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" style="border-radius: 50px;"
+                href="/loadShop?category=3"><strong>ROLEX</strong></a>
+            </div>
+            <div class="col-12 col-md-4 p-5 mt-3">
+              <a href="/loadShop?category=2">
+                <video class="img-fluid border" src="/assets/img/HUBLOT - BIG BANG TOURBILLON SAMUEL ROSS.mp4" style="border-radius: 10px;" autoplay muted loop></video>
+              </a>
+              <a class="btn btn-outline-dark btn-light py-2 px-4 mt-3 animate__animated animate__fadeInUp" style="border-radius: 50px;"
+                href="/loadShop?category=2"><strong>HUBLOT</strong></a>
+            </div>
+          </div>
+          
+    </section> 
+
+
+    
+
+ <section class="section-gap" style="background-image: url(/assets/img/bg-reg4.jpg); background-size: cover;">
+    <div class="container py-5">
+        
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                
+                <br> <br><h1 class="h1" style="color: rgb(0, 0, 0); font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif ;">FEATURED PRODUCTS</h1>
+            </div>
+        </div>
+        <br>
+
+
+
+        <div class="row">
+            <% for(i=0;i <product.length;i++){ %>
+                        <% if(product[i].review.length>=0){%>
+           <div class="col-12 col-sm-6 col-md-3 mb-4">
+                <div class="card h-100" style="background-color: black;">
+                    <a href="/view-details?id=<%=product[i]._id%>">
+                        <img src="/uploads/<%=product[i].image[0]%>" class="card-img-top" alt="...">
+                    </a>
+                    <div class="card-body">
+                        <ul class="list-unstyled d-flex justify-content-between">
+                            
+                            <li class="text-white text-right">Rs <%=product[i].price%>/-</li>
+                        </ul>
+                        <a href="/view-details?id=<%=product[i]._id%>" class="h4 text-decoration-none text-white" style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;"><%=product[i].name%></a>
+                        <p class="card-text" style="color: rgb(118, 129, 139); font-size: smaller;">
+                            <%=product[i].description%>   </p>
+                        
+                                                   
+                    </div>
+                </div>
+            </div>
+
+            <%}}%>
+
+            
+        </div>
+    </div>
+</section>
+<!-- End Featured Product -->
+<div class="container-fluid py-5" style="background-image: url(/assets/img/bg-reg4.jpg);">
+    <div class="container">
+        <div class="border-start border-5 border-dark ps-5 mb-5" style="max-width: 600px;">
+            <h6 class="text-light text-uppercase">Latest Blog</h6>
+            <h1 class="display-5 text-uppercase mb-0" style="color: rgb(11, 11, 11);"><b>Legacy of our Premium Brands</b> </h1>
+        </div>
+        <div class="row g-5">
+            <div class="col-lg-6">
+                <div class="blog-item" >
+                    <div class="row g-0 bg-dark overflow-hidden" >
+                        <div class="col-12 col-sm-5 h-100">
+                            <video class="img-fluid" autoplay muted loop>
+                                <source src="/assets/img/what-makes-a-rolex-a-rolex_TFPhA2wa.mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
+                            <div class="p-4">
+                                <div class="d-flex mb-3" style="color: azure;">
+                                    <small class="me-3"><i class="bi bi-bookmarks me-2"></i>ROLEX</small>
+                                    <small><i class="bi bi-calendar-date me-2" ></i>07 JUN, 2023</small>
+                                </div>
+                                <h5 class="text-uppercase text-light">Unleash Timeless Elegance </h5>
+                                <p class="text-light">The Ultra-Rare Rolex Daytona Paul,With its stunning aesthetics and exceptional functionality</p>
+                                <a class="text-primary text-uppercase" href="">Explore More<i class="bi bi-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="blog-item">
+                    <div class="row g-0 bg-dark overflow-hidden">
+                        <div class="col-12 col-sm-5
+                         h-100">
+                            <video class="img-fluid" style="height: 294px;" autoplay muted loop> 
+                                <source src="/assets/img/FOSSIL WATCHES COMMERCIAL (online-video-cutter.com).mp4" type="video/mp4">
+                            </video>
+                        </div>
+                        <div class=" col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
+                            <div class="p-4">
+                                <div class="d-flex mb-3" style="color: azure;">
+                                    <small class="me-3"><i class="bi bi-bookmarks me-2 "></i>HUBLOT</small>
+                                    <small><i class="bi bi-calendar-date me-2"></i>01 JUN, 2023</small>
+                                </div>
+                                <h5 class="text-uppercase text-light">Hublot - Big Bang Integrated Tourbillon Full Carbon</h5>
+                                <p class="text-light">features a combination of carbon fibre, integrated bracelet and Texalium,</p>
+                                <a class="text-primary text-uppercase" href="">Explore More<i class="bi bi-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const videoElement = document.getElementById("my-video");
+
+    videoElement.addEventListener("click", function() {
+        window.location.href = "/loadshop";
+    });
+</script>
+
+    <%- include('../layouts/footer.ejs') %>
+    </div>

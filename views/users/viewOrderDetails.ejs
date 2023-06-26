@@ -1,0 +1,282 @@
+<%- include ('../layouts/header.ejs') %>
+
+
+
+  <div class="container-fluid">
+
+    <div class="container">
+      <!-- Title -->
+      <div class="d-flex justify-content-between align-items-center py-3">
+        <h2 class="h5 mb-0 text-light"><a href="#" class="text-muted"></a> Order #<%=orders._id%>
+        </h2>
+      </div>
+
+      <!-- Main content -->
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Details -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="mb-3 d-flex justify-content-between">
+                <div>
+                  <span class="me-3">
+                    <%=orders.createdAt%>
+                  </span>
+                  <!-- <span class="me-3">#16123222</span>
+                  <span class="me-3">Visa -1234</span> -->
+                  <span class="badge rounded-pill bg-info">
+                    <%=orders.status%>
+                  </span>
+                </div>
+                <div class="d-flex">
+
+                  <% if (orders.status === "Processing") { %>
+                  <% for(let key of order){ %>
+                    <% if (key._id.toString() === orders._id.toString()) { %>
+                  <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#cancelModal-<%= key._id %>" style="border-radius: 25px;">Cancel</a>
+
+                  <div class="modal fade" id="cancelModal-<%= key._id %>" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel-<%= key._id %>" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="cancelModalLabel-<%= key._id %>">Cancellation Reason</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="/cancelorder?id=<%= key._id %>" method="POST">
+                            <div class="form-group">
+                              <label for="cancellationReason-<%= key._id %>">Please provide us the reason for Cancellation</label>
+                              <textarea class="form-control" id="cancellationReason-<%= key._id %>" name="cancellationReason" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-danger" style="margin-top: 10px;">Confirm Cancellation</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %>
+                  <% } %>
+                  <% } %>
+
+
+
+
+
+                  <div class="dropdown">
+                    <button class="btn btn-link p-0 text-muted" type="button" data-bs-toggle="dropdown">
+                      <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                      <li><a class="dropdown-item" href="#"><i class="bi bi-pencil"></i> Edit</a></li>
+                      <li><a class="dropdown-item" href="#"><i class="bi bi-printer"></i> Print</a></li>
+                    </ul>
+                  </div>
+                </div>
+
+              </div>
+
+              
+
+
+
+
+
+              <table class="table table-borderless">
+                <% for(let key of orders.products.item) { %>
+
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="d-flex mb-2">
+                          <div class="flex-shrink-0">
+                            <img src="uploads/<%=key.productId.image[0]%>" alt="" width="70" class="img-fluid">
+                          </div>
+                          <div class="flex-lg-grow-1 ms-3">
+                            <h6 style="color: rgb(100, 91, 91);" class="small mb-0"><a href="#" class="text-reset">
+                                <b><%=key.productId.name%></b>
+                              </a></h6>
+                            <span class="small">Color: Black</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td><b>Quantity:  </b><%=key.qty%>
+                      </td>
+                      <td class="text-end"><b>Amount:  </b><%=key.productId.price%>/-
+                      </td>
+                    </tr>
+                    <% } %>
+
+
+                  </tbody>
+                  <tfoot>
+                    <tr class="fw-bold">
+                      <td colspan="2">TOTAL</td>
+                      <td class="text-end">
+                        Rs. <%=orders.payment.amount%>/-
+                      </td>
+                    </tr>
+
+                    
+
+                  </tfoot>
+              </table>
+
+
+
+
+              <!-- <div>
+                  <% if(orders.status==="Delivered" ){%>
+                      <% for(let key of order){ %>
+                        <% if (key._id.toString() === orders._id.toString()) { %>
+                          <% const currentDate=new Date(); const cutoffDate=new Date();
+                            cutoffDate.setDate(currentDate.getDate() - 14); const createdAtDate=new Date(key.createdAt);
+                            if (createdAtDate <=cutoffDate) { %>
+                            <button style="display: inline;" type="button" class="btn btn-danger " disabled>return
+                              item</button>
+                            <a style="color: blue;" href="/writeReview?id=<%=key._id%>">leave a review</a>
+          
+                            <% } else { %>
+                              <a style="display: inline; margin-left: 575px; border-radius: 25px;" href="/returnOrder?id=<%=key._id%>"
+                                class="btn btn-danger">Return Item</a>
+                                <a style="display: inline;border-radius: 25px" href="/writeReview?id=<%=key._id%>"
+                                class="btn btn-success">Add Review</a>
+                            <%}%>
+                        <%}%>
+                      <%}%>
+                  <%}%>
+              </div> -->
+
+
+                  <!-- RETURN REASON -->
+
+                  <div class="d-flex">
+                    <% if(orders.status==="Delivered" ){%>
+                        <% for(let key of order){ %>
+                          <% if (key._id.toString() === orders._id.toString()) { %>
+                            <% const currentDate=new Date(); const cutoffDate=new Date();
+                              cutoffDate.setDate(currentDate.getDate() - 14); const createdAtDate=new Date(key.createdAt);
+                              if (createdAtDate <=cutoffDate) { %>
+                              <button style="display: inline;" type="button" class="btn btn-danger " disabled>return
+                                item</button>
+                              <a style="color: blue;" href="/writeReview?id=<%=key._id%>">Leave a Review</a>
+            
+                              <% } else { %>
+                                <!-- <a style="display: inline; margin-left: 575px; border-radius: 25px;" href="/returnOrder?id=<%=key._id%>"
+                                  class="btn btn-danger">Return Item</a> -->
+                                  <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#returnModal-<%= key._id %>" style="margin-left: 575px; border-radius: 25px;" >Return Item</a>
+
+                                  <div class="modal fade" id="returnModal-<%= key._id %>" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel-<%= key._id %>" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="returnModalLabel-<%= key._id %>">Return Reason</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                          <form action="/returnOrder?id=<%=key._id%>" method="POST">
+                                            <div class="form-group">
+                                              <label for="returnReason-<%= key._id %>">Please provide us the reason for Return</label>
+                                              <textarea class="form-control" id="returnReason-<%= key._id %>" name="returnReason" rows="3" required></textarea>
+                                            </div>
+                                            <button type="submit" class="btn btn-danger" style="margin-top: 10px;" >Confirm Return</button>
+                                          </form>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <a style="display: inline;margin-left: 10px; border-radius: 25px" href="/writeReview?id=<%=key._id%>"
+                                  class="btn btn-success">Add Review</a>
+                              <%}%>
+                          <%}%>
+                        <%}%>
+                    <%}%>
+                </div>
+
+
+
+
+
+
+            </div>
+          </div>
+          <!-- Payment -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-lg-6">
+                  <h3 class="h6">Payment Method</h3>
+                  <p>
+                    <%=orders.payment.method%> <br>
+                      Total:  Rs. <%=orders.payment.amount%>/- 
+
+                      <!-- <span class="badge bg-warning rounded-pill text" style="color: black;">CASH</span> -->
+                      <span class="badge bg-warning rounded-pill text" style="color: black; text-transform: uppercase;"><%= orders.payment.method %></span>
+
+
+                  </p>
+                  <% if(orders.paymentDetails&&orders.payment.method!="COD" ){%>
+                    <h3 class="h6">Payment Details</h3>
+                    <p>Receipt no:<%= orders.paymentDetails.reciept%>
+                    </p>
+                    <p>Payment Status:<%= orders.paymentDetails.status%>
+                    </p>
+                    <%}%>
+                </div>
+                <div class="col-lg-6">
+                  <h3 class="h6">Billing address</h3>
+                  <address>
+                    <strong>
+                      <%=orders.address.firstname%>
+                        <%=orders.address.lastname%>
+                    </strong><br>
+                    <%=orders.address.address%><br>
+                      Pin:<%=orders.address.zip%> <br>
+                        Phone:<%=orders.address.mobile%>
+                          <!-- <abbr title="Phone">P:</abbr>  -->
+                  </address>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <!-- Customer Notes -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <p><b>Thank you for Shopping with us.!</b></p>
+              <p>To say thank you would be an understatement, but we can’t exactly give a hug, so…thank you for your order!</p>
+            </div>
+          </div>
+          <div class="card mb-4">
+            <!-- Shipping information -->
+            <div class="card-body">
+              <h3 class="h6">Shipping Information</h3>
+              <strong>FedEx</strong>
+              <span><a href="#" class="text-decoration-underline" target="_blank">FF1234567890</a> <i
+                  class="bi bi-box-arrow-up-right"></i> </span>
+              <hr>
+              <h3 class="h6">Address</h3>
+              <address>
+                <strong>
+                  <%=orders.address.firstname%>
+                    <%=orders.address.lastname%>%>
+                </strong><br>
+                <%=orders.address.address%><br>
+                  Pin:<%=orders.address.zip%> <br>
+                    Phone:<%=orders.address.mobile%>
+              </address>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <%- include ('../layouts/footer.ejs') %>
+

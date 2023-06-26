@@ -1,0 +1,343 @@
+<%- include('../layouts/header.ejs') %>
+
+
+<!-- Place this code wherever you want the toaster alert to be displayed -->
+<% if (toaster) { %>
+      <div id="toaster-alert" class="alert alert-<%= toaster.type %>">
+    <%= toaster.message %>
+  </div>
+<% } %>
+
+<style>
+  #toaster-alert {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background-color: #59AB6E;
+    color: #fff;
+    padding: 10px;
+  }
+</style>
+
+<br>
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb mb-30">
+                <a class="breadcrumb-item text-light" href="/home">Home</a>
+                <span class="breadcrumb-item active">Profile</span>
+            </nav>
+        </div>
+    </div>
+</div>
+
+
+<br>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 align-items-stretch">
+      <div class="card cart-detail">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <button class="nav-link active" id="v-pills-home-tab" data-toggle="pill" data-target="#v-pills-home"
+            type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Profile</button>
+          <button class="nav-link" id="v-pills-profile-tab" data-toggle="pill" data-target="#v-pills-profile"
+            type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">My Orders</button>
+          <button class="nav-link" id="v-pills-messages-tab" data-toggle="pill" data-target="#v-pills-messages"
+            type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Addresses</button>
+          <!-- <button class="nav-link" id="v-pills-settings-tab" data-toggle="pill" data-target="#v-pills-settings" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false"></button> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-9 ">
+      <div class="tab-content align-items-stretch" id="v-pills-tabContent">
+        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+          <div class="d-flex justify-content-between">
+            <div class="card" style="width: 16rem;background-color: rgb(179, 252, 171);border-radius:25px;">
+              <div class="card-body" style="color: rgb(0, 0, 0);">
+                <h4 class="card-title"><u>Wallet Balance</u></h4>
+                <p class="card-text">Rs <%-userData.wallet%></p>
+              </div>
+            </div>
+            <div class="card" style="width: 16rem;background-color: rgb(241, 234, 234);border-radius:25px;">
+              <div class="card-body"style="color: rgb(0, 0, 0);">
+                <h4 class="card-title"><u>Cart Items</u></h4>
+                <p class="card-text"><%-userData.cart.item.length%></p>
+              </div>
+            </div>
+            <div class="card" style="width: 16rem;background-color: rgb(250, 154, 154);border-radius:25px;">
+              <div class="card-body" style="color: rgb(0, 0, 0);;">
+                <h4 class="card-title"><u>Wishlisted Items</u></h4>
+                <p class="card-text"><%-userData.wishlist.item.length%></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card cart-detail mt-3" style="border-radius: 15px;background-color: rgb(46, 46, 46); color: white;">
+            <form action="" style="margin-left: 60px" ; method="" id="form" onsubmit="return onSubmitFunction()">
+              <div class="mb-2 row mt-2 pt-5">
+                <input type="hidden" name="id" value="">
+                <label for="staticEmail" class="col-sm-3 col-form-label">Name:</label>
+                <div class="col-sm-6">
+                  <span style="font-weight: 600;font-size: larger;">
+                    <%=userData.name %>
+                  </span>
+                </div>
+              </div>
+
+              <div class="mb-3 row ">
+                <label for="inputPassword" class="col-sm-3 col-form-label">Email:</label>
+                <div class="col-sm-6">
+                  <span style="font-weight: 500;">
+                    <%=userData.email %>
+                  </span>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <label for="inputPassword" class="col-sm-3 col-form-label">Mobile:</label>
+                <div class="col-sm-6">
+                  <div class="input-group mb-3">
+                    <span style="font-weight: 500;">
+                      <%=userData.mobile %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-danger"></p>
+              <div style="margin-bottom: 2%; margin-left: 43%;">
+                <a href="/editUser" class="btn btn-light btn-sm mt-2"><b>Edit</b></a>
+
+              </div>
+            </form>
+          </div>
+
+          <br>
+        </div>
+
+        
+        <div class="tab-pane fade bg-light" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"
+          style="border-radius: 15px;">
+          <section class="container ">
+            <div class="table-responsive">
+              <table class="table mb-5">
+                <thead class="bg-yellow-200">
+                  <tr>
+
+                    <th>Order Id</th>
+                    <th>Date Purchased</th>
+                    <th>Payment</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                    <th>Orders</th>
+                  </tr>
+                </thead>
+                <% for(let key of order){ %>
+                  <tbody>
+                    <td>
+                      <%=key._id%>
+                    </td>
+                    <td>
+                      <%=key.createdAt.toDateString()%>
+                    </td>
+                    <td>
+                      <%=key.payment.method%>
+                    </td>
+                    <td>
+                      <%=key.payment.amount%>
+                    </td>
+                    <td>
+                      <% if(key.status=="Delivered" ){%>
+                        <h6>Delivered</h6>
+                      <%} else if(key.status=="cancelled" ){%>
+                          <h6>Cancelled</h6>
+                      <%}else if(key.status=="returned" ){%>
+                          <h6>Returned</h6>
+                      <%}else{%>
+                          <h6>Processing</h6>
+                      <%}%>
+                    </td>
+                    <td>
+                      <a href="/vieworder?id=<%=key._id%>" class="btn btn-primary">Details</a>
+                    </td>
+                  </tbody>
+                  <% } %>
+              </table>
+            </div>
+          </section>
+        </div>
+
+
+        <div class="tab-pane fade " id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+          <button type="button" style="margin-left: 2%;" class="btn btn-dark " data-toggle="modal"
+            data-target="#exampleModal">
+            Add Address
+          </button>
+          <!-- modal -->
+          <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Add Address</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form method="post" action="/addAddress" class="colorlib-form">
+                    <div class="row">
+
+                      <label><b>First Name</b><a style="color: red;"> *</a></label>
+                      <input type="text" class="form-control" name="firstname" required>
+
+                      <label><b>Last Name</b><a style="color: red;"> *</a></label>
+                      <input type="text" class="form-control" name="lastname" required>
+
+
+
+                      <label><b>Country</b><a style="color: red;"> *</a></label>
+                      <input type="text" class="form-control" name="country" required>
+
+                      <label><b>Address</b><a style="color: red;"> *</a></label>
+                      <input type="text" class="form-control" name="address" required>
+
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label><b>Town / City</b><a style="color: red;"> *</a></label>
+                          <input type="text" class="form-control" name="city" required>
+                        </div>
+
+                        <div class="col-sm-6">
+                          <label><b>State / County</b><a style="color: red;"> *</a></label>
+                          <input type="text" class="form-control" name="state" required>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-sm-6">
+                          <label><b>Postalcode / ZIP</b><a style="color: red;"> *</a></label>
+                          <input type="text" class="form-control" name="zip" required>
+                        </div>
+
+                        <div class="col-sm-6">
+                          <label><b>Phone</b><a style="color: red;"> *</a></label>
+                          <input type="tel" class="form-control" name="mno" required>
+                        </div>
+                      </div>
+
+                      <br>
+                      <!-- <button type="submit" class="btn btn-success rounded-2 shadow  ">
+                       Save Address
+                     </button> -->
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-success">Save changes</button>
+                </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <%if(userAddress.length>0){
+              for(let key of userAddress){%>
+              <div class="col-md-12">
+                <div class="card cart-detail border-gray  mt-2 mb-3" style="padding: 30px;border-radius: 15px;background-color: rgb(46, 46, 46);color: white;">
+                  <span class="h5">
+                    <%=key.firstname%>
+                      <%=key.lastname%>
+                  </span>
+                  <div class="pr-2">
+                    <%=key.address%>,<br>
+                      <%=key.city%>,<br>
+                        <%=key.state%><br>
+                          <%=key.country%>
+                            <br> Pin:<%=key.zip%><br> Phone:<%=key.mobile%>
+                                <br><br>
+                                <a href="/edit-address?id=<%=key._id%>"><input type="button" value="Edit"
+                                    class="btn btn-light btn-sm "></a>
+                                <!-- <a href="/delete-address?id=<%=key._id%>"><input type="button" value="Delete"
+                                    class="btn btn-light btn-sm "></a> -->
+                                    <a href="#" data-toggle="modal" data-target="#deleteModal-<%= key._id %>">
+                                      <input type="button" value="Delete" class="btn btn-light btn-sm">
+                                    </a>
+                                    
+                                    <div class="modal fade" id="deleteModal-<%= key._id %>" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel-<%= key._id %>" aria-hidden="true">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteModalLabel-<%= key._id %>"><b style="color: black;">Confirm Deletion</b></h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body" style="color: black;">
+                                            <p>Are you sure you want to delete this address?</p>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <a href="/delete-address?id=<%= key._id %>" class="btn btn-danger">Delete</a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    
+                  </div>
+                </div>
+
+
+              </div>
+              <%}%>
+                <%}%>
+
+          </div>
+
+        </div>
+
+        <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</div>
+
+
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+<script src="lib/easing/easing.min.js"></script>
+<script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Contact Javascript File -->
+<script src="mail/jqBootstrapValidation.min.js"></script>
+<script src="mail/contact.js"></script>
+
+<!-- Template Javascript -->
+<script src="/main.js"></script>
+
+
+  <%- include('../layouts/footer.ejs') %>
+
+  <script>
+    // Automatically clear the toaster alert after 3 seconds
+    setTimeout(function() {
+      var toasterAlert = document.getElementById('toaster-alert');
+      if (toasterAlert) {
+        toasterAlert.style.display = 'none';
+      }
+    }, 3000);
+  </script>

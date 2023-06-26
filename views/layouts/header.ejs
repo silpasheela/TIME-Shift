@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>TimeShift</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/templatemo.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/style1.css">
+    <link rel="stylesheet" href="assets/css/style2.css">
+    <link rel="stylesheet" href="assets/css/blog.css">
+    <link rel="shortcut icon" href="assets/img/png-transparent-ts-logo-thumbnail.png" type="image/x-icon">
+
+    <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
+    <link rel="stylesheet" href="assets/css/fontawesome.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+
+    <link href="magiczoom/magiczoom.css" rel="stylesheet" type="text/css" media="screen" />
+
+    
+
+</head>
+
+<style>
+
+.custom-search {
+    border-radius: 20px; /* Adjust the value to change the border roundness */
+    font-size: 14px; /* Adjust the value to change the font size */
+    padding: 5px 15px; /* Adjust the values to change the padding */
+}
+
+#video-section {
+    position: relative;
+    width: 100%; /* Adjust width as needed */
+    height: auto; /* Adjust height as needed */
+  }
+
+  #video-section video {
+    width: 100%;
+    height: auto;
+  }
+  
+  @media (max-width: 576px) { /* Adjust the breakpoint as needed */
+        .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            text-align: center;
+        }
+    }
+
+  #video-section .text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 18px; 
+  }
+
+/* Additional styling for the container if needed */
+.section-gap {
+        margin-bottom: 10px;
+    }
+
+</style>
+
+<body style="overflow-x:hidden; background-image: url(/assets/img/bg-reg4.jpg); background-size: cover;">
+    
+    
+
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow" style="background-image: url('/assets/img/bg-reg4.jpg');">
+        <div class="container d-flex justify-content-between align-items-center">
+
+        
+            <a class="navbar-brand text-success logo h2 align-self-center" href="/home">
+                <h3 style="font-size: 38px; color: rgb(255, 255, 255);"> TIME<span style="color: rgb(240, 255, 155); font-size: 31px; ">-Shift</span></h3>
+            </a>
+
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+
+            <div class="align-self-center collapse navbar-collapse flex-fill d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+                <div class="flex-fill">
+                    <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home"><b>Home</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/loadShop"><b>Shop</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/loadWishlist"><b>Wishlist</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/loadCart"><b>Cart</b></a>
+                        </li>
+
+                        <% if (user) { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/userProfile">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/logout">Logout</a>
+                            </li>
+                            <% } else { %>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/login">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/register">Register</a>
+                                </li>
+                             
+                                <% }%>        
+                                   
+                    </ul>
+
+                </div>
+                
+            </div>
+
+        </div>
+    </nav>
+    <!-- Close Header -->

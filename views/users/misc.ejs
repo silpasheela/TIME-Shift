@@ -1,0 +1,17 @@
+                <!-- <% if(orders.status==="Delivered" ){%>
+
+                <% for(let key of orders.products.item){ %>
+                  <% const currentDate=new Date(); 
+                    const cutoffDate=new Date();
+                          cutoffDate.setDate(currentDate.getDate() - 14); 
+                          const createdAtDate=new Date(key.createdAt);
+                          if (createdAtDate <=cutoffDate) { %>
+                          <button style="display: inline;" type="button" class="btn btn-danger " disabled>return item</button>
+                          <a style="color: blue;" href="/writeReview?id=<%=key._id%>">leave a review</a>
+
+                          <% } else { %>
+                            <a style="display: inline; margin-left: 575px;" href="/returnOrder?id=<%=key._id%>" class="btn btn-danger">Return Item</a>
+                              <a style="display: inline;" href="/writeReview?id=<%=key._id%>" class="btn btn-success">Add Review</a>
+                          <%}%>
+                  <%}%>
+                  <%}%> -->

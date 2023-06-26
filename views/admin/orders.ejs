@@ -1,0 +1,401 @@
+<%- include ('../layouts/adminHeader.ejs') %>
+
+
+   <style>
+        table,
+        th,
+        td {
+            border: 1px solid rgba(7, 7, 7, 0.701);
+        }
+        
+    </style> 
+<div style="padding: 50px;">
+    
+    
+        <h4 class="text-center my-5 text-dark"><b><u>ORDER MANAGEMENT</u></b></h4>
+        <input type="date" name="startdate" id="startdate" onchange="cli()">
+        <input type="date" name="enddate" id="enddate" onchange="cli()">
+        <button type="button" id="pdf" class="text-white btn btn-secondary"> Download</button><br><br>
+        
+
+        <div>
+            <label for="status-filter">Filter by Status:</label>
+            <select id="status-filter" onchange="filterOrdersByStatus()">
+                <option value="">All</option>
+                <option value="Processing">Processing</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Packed">Packed</option>
+            </select>
+        </div><br>
+        
+        <table class="table text-center border " id="ordersTable">
+            <thead>
+                <tr>
+                    <th scope="col">SL NO</th>
+                    <th scope="col">Order Id</th>
+                    <!-- <th scope="col">Product</th> -->
+                    <th scope="col">User Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Payment</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Action</th>
+
+
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <% if(orders.length> 0){ %>
+                    <% for(let i=1;i<=orders.length; i++){ %>
+                        <tr>
+                            <th>
+                                <%= i %>
+                            </th>
+                            <td>
+                                <%= orders[i-1]._id %>
+                            </td>
+                            
+                            <!-- <td>
+                              <%=orders[i-1].products.item[0].productId%>
+                          </td> -->
+
+                            <td>
+                                <%=orders[i-1].userId.name%>
+                            </td>
+                            <td>
+                                <%= orders[i-1].payment.amount%>
+                            </td>
+                            <td>
+                                <%= orders[i-1].payment.method%>
+
+                            </td>
+                            <td>
+                                <%= orders[i-1].status%>
+                            </td>
+                            <td>
+                               <%= orders[i-1].createdAt.toISOString().slice(0,10) %>
+                            </td>
+                            <td>
+                                <a class="text-white btn btn-secondary"
+                                    href="/admin/loadOrderDetails?id=<%=orders[i-1]._id%>">View Details</a><br>
+                                <br>
+                                <form action="/admin/updateStatus" method="post">
+                                    <select name="status" class="browser-default custom-select">
+                                        <option><%=orders[i-1].status%></option>
+                                        <option>cancelled</option>
+                                        <option>Delivered</option>
+                                        <option>Shipped</option>
+                                        <option>Packed</option>
+                                    </select>
+
+                                    <input type="hidden" name="orderId" value="<%=orders[i-1]._id%>">
+                                    <% if (orders[i-1].status!="returned" &&orders[i-1].status!="cancelled" ){%>
+                                        <button style="background-color: rgb(122, 214, 157);border-radius: 5px;" type="submit">Update</button>
+                                        <%}else{%>
+                                            <%}%>
+                                </form>
+                            </td>
+
+
+
+
+                        </tr>
+
+                        <% } } else{ %>
+                            <tr>
+                                <td colspan="5">Products Not Found</td>
+                            </tr>
+                            <% } %>
+
+            </tbody>
+        </table>
+        <div class="pagination-container">
+  <ul class="pagination">
+    <% if (currentPage > 1) { %>
+    <li class="page-item">
+      <a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= ordersPerPage %>">Previous</a>
+    </li>
+    <% } %>
+
+    <% for (let i = 1; i <= totalPages; i++) { %>
+    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+      <a class="page-link" href="?page=<%= i %>&limit=<%= ordersPerPage %>"><%= i %></a>
+    </li>
+    <% } %>
+
+    <% if (currentPage < totalPages) { %>
+    <li class="page-item">
+      <a class="page-link" href="?page=<%= currentPage + 1 %>&limit=<%= ordersPerPage %>">Next</a>
+    </li>
+    <% } %>
+  </ul>
+</div>
+
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
+
+
+        <!-- SheetJS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+
+function filterOrdersByStatus() {
+    const statusFilter = document.getElementById('status-filter');
+    const selectedStatus = statusFilter.value;
+    const tableRows = document.querySelectorAll('#ordersTable tbody tr');
+
+    tableRows.forEach(row => {
+        const statusCell = row.querySelector('td:nth-child(6)');
+        const orderStatus = statusCell.textContent.trim(); // Trim any leading or trailing whitespace
+
+        if (selectedStatus === '' || orderStatus === selectedStatus) {
+            row.style.display = 'table-row';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+
+            // Download as PDF
+            // console.log(jsPDF);
+            // document.getElementById('pdf').addEventListener('click', function () {
+            //     var doc = new jsPDF();
+            //     doc.autoTable({
+            //         html: '#ordersTable',
+            //         columns: [
+            //             { header: 'Order ID', dataKey: 'Order ID' },
+            //             { header: 'Product', dataKey: 'Product' },
+            //             { header: 'Price', dataKey: 'Price' },
+            //             { header: 'Method', dataKey: 'Method' },
+            //             { header: 'Method', dataKey: 'Method' },
+            //             { header: 'Method', dataKey: 'Method' },
+            //             { header: 'Method', dataKey: 'Method' },
+
+
+            //         ]
+            //     });
+            //     doc.save('sales.pdf');
+            // });
+
+
+            // Download as Excel
+            // document.getElementById('downloadExcelBtn').addEventListener('click', function() {
+            // Get the table element
+            //   var table = document.getElementById('ordersTable');
+
+            // Convert the table data to a worksheet object
+            //   var worksheet = XLSX.utils.table_to_sheet(table);
+
+            // Create a new workbook and add the worksheet
+            //   var workbook = XLSX.utils.book_new();
+            //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Sales');
+
+            // Save the Excel file
+            //   XLSX.writeFile(workbook, 'sales.xlsx');
+            // });
+
+
+            // function cli() {
+            //     start = document.getElementById("startdate").value
+            //     end = document.getElementById("enddate").value
+            //     console.log(start, end);
+            //     data = { start: start, end: end }
+            //     axios.post('/admin/updateOrder', data)
+            //         .then(res => {
+            //             if (res.data) {
+            //                 console.log(res.data);
+            //                 console.log(res.data.orderDetail);
+            //                 let orders = res.data.orderDetail
+            //                 let ordersTableHTML = '';
+
+            //                 if (orders.length > 0) {
+            //                     orders.forEach((order, i) => {
+            //                         ordersTableHTML += `<tr> <th>${i + 1}</th> <td>${order._id}</td> <td>${order.userId.name}</td> <td>${order.payment.amount}</td> <td>${order.payment.method}</td> <td>${order.status}</td> <td>${order.createdAt}</td> <td> <a class="text-white btn btn-light" href="/admin/loadOrderDetails?id=${order._id}">view Details</a><br> <br> <form action="/admin/updateStatus" method="post"> <select name="status" class="browser-default custom-select"> <option>${order.status}</option> <option>cancelled</option> <option>Delivered</option> <option>Shipped</option> <option>packed</option> </select> <input type="hidden" name="orderId" value="${order._id}"> ${order.status !== 'returned' ? '<button style="background-color: darkcyan;" type="submit">update</button>' : ''} </form> </td> </tr> `;
+            //                     });
+            //                 } else {
+            //                     ordersTableHTML = '<tr><td colspan="5">Products Not Found</td></tr>';
+            //                 }
+            //                 document.getElementById("tbody").innerHTML = ordersTableHTML;
+            //             }
+            //         })
+            //         .catch(error => {
+            //             console.log(error);
+            //         })
+            // }
+
+            // function cli() {
+            //     var startDate = new Date(document.getElementById("startdate").value);
+            //     var endDate = new Date(document.getElementById("enddate").value);
+
+            //     if (endDate < startDate) {
+            //         alert("End date must not be prior to start date");
+            //         return;
+            //     }
+
+            //     var data = { start: startDate, end: endDate };
+            //     axios
+            //         .post("/admin/updateOrder", data)
+            //         .then((res) => {
+            //         if (res.data) {
+            //             console.log(res.data);
+            //             console.log(res.data.orderDetail);
+            //             var orders = res.data.orderDetail;
+            //             var ordersTableHTML = "";
+
+            //             if (orders.length > 0) {
+            //             orders.forEach((order, i) => {
+            //                 ordersTableHTML += `<tr> <th>${i + 1}</th> <td>${order._id}</td> <td>${order.userId.name}</td> <td>${order.payment.amount}</td> <td>${order.payment.method}</td> <td>${order.status}</td> <td>${order.createdAt}</td> <td> <a class="text-white btn btn-light" href="/admin/loadOrderDetails?id=${order._id}">view Details</a><br> <br> <form action="/admin/updateStatus" method="post"> <select name="status" class="browser-default custom-select"> <option>${order.status}</option> <option>cancelled</option> <option>Delivered</option> <option>Shipped</option> <option>packed</option> </select> <input type="hidden" name="orderId" value="${order._id}"> ${order.status !== 'returned' ? '<button style="background-color: darkcyan;" type="submit">update</button>' : ''} </form> </td> </tr> `;
+            //             });
+            //             } else {
+            //             ordersTableHTML = '<tr><td colspan="5">Products Not Found</td></tr>';
+            //             }
+            //             document.getElementById("tbody").innerHTML = ordersTableHTML;
+            //         }
+            //     })
+            //     .catch((error) => {
+            //     console.log(error);
+            //     });
+            // }
+
+
+
+
+
+
+
+
+
+            function cli() {
+  var startDate = new Date(document.getElementById('startdate').value);
+  var endDate = new Date(document.getElementById('enddate').value);
+
+  if (endDate < startDate) {
+    alert('End date must not be prior to start date');
+    // return;
+  }
+
+  var data = { start: startDate, end: endDate };
+  axios
+    .post('/admin/updateOrder', data)
+    .then((res) => {
+      if (res.data) {
+        console.log(res.data);
+        console.log(res.data.orderDetail);
+        var orders = res.data.orderDetail;
+        var ordersTableHTML = '';
+
+        if (orders.length > 0) {
+          orders.forEach((order, i) => {
+
+            ordersTableHTML += `<tr> <th>${i + 1}</th> <td>${order._id}</td> <td>${order.userId.name}</td> <td>${order.payment.amount}</td> <td>${order.payment.method}</td> <td>${order.status}</td> <td>${order.createdAt}</td> <td> <a class="text-white btn btn-dark" href="/admin/loadOrderDetails?id=${order._id}">View Details</a><br> <br> <form action="/admin/updateStatus" method="post"> <select name="status" class="browser-default custom-select"> <option>${order.status}</option> <option>cancelled</option> <option>Delivered</option> <option>Shipped</option> <option>packed</option> </select> <input type="hidden" name="orderId" value="${order._id}"> ${order.status !== 'returned' ? '<button style="background-color: rgb(122, 214, 157); border-radius: 8px" type="submit">update</button>' : ''} </form> </td> </tr> `;
+          });
+
+          // Update the table
+          document.getElementById('tbody').innerHTML = ordersTableHTML;
+
+          // Enable PDF download button
+          document.getElementById('pdf').disabled = false;
+        } else {
+          // Show message when no records found
+          document.getElementById('tbody').innerHTML = '<tr><td colspan="8">No records found</td></tr>';
+
+          // Disable PDF download button
+          document.getElementById('pdf').disabled = true;
+        }
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+document.getElementById('pdf').addEventListener('click', function () {
+  var ordersTable = document.getElementById('ordersTable');
+
+  if (ordersTable.rows.length === 1) {
+    alert('No records found. Cannot generate PDF.');
+    return;
+  }
+
+  var doc = new jsPDF();
+  doc.autoTable({
+    html: '#ordersTable',
+    columns: [
+      { header: 'No.', dataKey: 'No.' },
+      { header: 'Order ID', dataKey: 'Order ID' },
+      { header: 'Product ID', dataKey: 'Product ID' },
+      { header: 'User', dataKey: 'User' },
+      { header: 'Amount', dataKey: 'Amount' },
+      { header: 'Payment Method', dataKey: 'Payment Method' },
+      { header: 'Status', dataKey: 'Status' },
+      { header: 'Created At', dataKey: 'Created At' },
+    ],
+  });
+  doc.save('Sales_Report.pdf');
+});
+
+document.getElementById('pdf').disabled = true;
+
+
+        </script>
+
+
+
+
+<!-- /*download as excel*/ -->
+
+<script>
+
+document.getElementById('pdf').addEventListener('click', function () {
+  var ordersTable = document.getElementById('ordersTable');
+
+  if (ordersTable.rows.length === 1) {
+    alert('No records found. Cannot generate Excel file.');
+    return;
+  }
+
+  var workbook = XLSX.utils.table_to_book(ordersTable);
+  var worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  var excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+  var blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  var url = URL.createObjectURL(blob);
+  
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'Sales_Report.xlsx';
+  a.click();
+
+  setTimeout(function () {
+    URL.revokeObjectURL(url);
+  }, 0);
+});
+
+document.getElementById('pdf').disabled = true;
+
+
+</script>
+
+
+
+
+
+
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+
+
+        <%- include ('../layouts/adminFooter.ejs') %>

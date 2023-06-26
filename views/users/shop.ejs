@@ -1,0 +1,348 @@
+<%- include('../layouts/headershop.ejs') %>
+
+
+
+    <!-- Navbar Start -->
+
+    <style>
+
+
+        /*side bar filter*/
+
+    .custom-control.custom-checkbox {
+        padding: 10px;
+        background-color: #000000;
+        border-radius: 25px;
+        }
+
+    .custom-control.custom-checkbox:hover {
+        background-color: #4b4b4b;
+    }
+
+    .custom-control.custom-checkbox .form-check-input {
+        margin-right: 10px;
+    }
+
+    .custom-control.custom-checkbox .form-check-label {
+        font-weight: 500;
+    }
+
+
+        /* Add your custom CSS styles here */
+.select-box {
+  padding: 10px;
+  border: none;
+  border-radius: 15px;
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("arrow_down.png");
+  background-repeat: no-repeat;
+  background-position: right center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.select-box:focus {
+  outline: none;
+}
+
+.select-box:hover {
+  background-color: #3d3c3c;
+}
+
+.select-box option {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+/* Custom arrow icon */
+.select-box::after {
+  content: '';
+  width: 12px;
+  height: 12px;
+  background-image: url("arrow.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+/* Custom hover effect for options */
+.select-box option:hover {
+  background-color: #e6e6e6;
+}
+
+
+    </style>
+
+    
+    <!-- Breadcrumb Start -->
+    <br>
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb  mb-30">
+                    <a class="breadcrumb-item text-white" href="/home">Home</a>
+                    <a class="breadcrumb-item text-white" href="/loadShop">Shop</a>
+                    <span class="breadcrumb-item active text-light">Shop List</span>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb End -->
+
+
+    <!-- Shop Start -->
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <!-- Shop Sidebar Start -->
+            <div class="col-lg-3 col-md-4">
+                <!-- Price Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="text-light pr-3">Filter
+                        by Category</span></h5>
+                <div class="p-4 mb-10 " style="border: 1px solid #000000; border-radius: 15px; ">
+                    <form action="/loadShop">
+
+                        <% for (i = 0; i < category.length; i++) { %>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                              <div class="form-check">
+                                <input class="text-light category form-check-input" type="checkbox" value="<%-i%>"
+                                  name="category" onchange="update()" <% for (j = 0; j < selected.length; j++) {
+                                  if (selected[j] == i) { %>checked<% } } %>/>
+                                <label class="text-light form-check-label" for="flexRadioDefault1">
+                                  <%-category[i].name %>
+                                </label>
+                              </div>
+                            </div>
+                          <% } %>
+                          
+                </div>
+                <!-- Price End --> 
+            </div>
+            <!-- Shop Sidebar End -->
+
+
+            <!-- Shop Product Start -->
+            <div class="col-lg-9 col-md-8">
+                <div class="row pb-3">
+                    <div class="col-12 pb-1">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div>
+                                
+                            </div>
+                            <!-- <div class="ml-2"><select class="select-box select-box--transparent-b-2"
+                                    name="limit" id="limit" onchange="update()" style="background-color: black;">
+                                    <option value="12" <% if(limit==12) { %>selected<%}%>>Show: All</option>
+                                    <option value="3" <% if(limit==3) { %>selected<%}%>>Show: 3</option>
+                                    <option value="6" <% if(limit==6) { %>selected<%}%>>Show: 6</option>
+                                    <option value="9" <% if(limit==9) { %>selected<%}%>>Show: 9</option>
+                                </select>
+                            </div> -->
+
+                            <div class="ml-2">
+                                <select class="select-box select-box--transparent-b-2" name="limit" id="limit" onchange="update()" style="background-color: black;">
+                                  <option value="12" <% if(limit==12) { %>selected<%}%>>Show: All</option>
+                                  <% for (var i = 10; i <= 30; i += 10) { %>
+                                    <option value="<%= i %>" <% if(limit==i) { %>selected<%}%>>Show: <%= i %></option>
+                                  <% } %>
+                                </select>
+                              </div>                  
+
+                            <div class="ml-2">
+                                <select class="select-box select-box--transparent-b-2" name="sort" id="sort"
+                                    onchange="update()">
+                                    <option value="0" <% if(order==0) { %>selected<%}%> >Sort By: Latest Arrivals
+                                    </option>
+                                    <option value="1" <% if(order==1) { %>selected<%}%> >Sort By: Lowest Price</option>
+                                    <option value="-1" <% if(order==-1) { %>selected<%}%> >Sort By: Highest Price
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row pb-3" id="products">
+                    <% for(i=0;i<product.length;i++){ %>
+                <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="/view-details?id=<%=product[i]._id%>">
+                            <img src="/uploads/<%=product[i].image[0]%>" class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body" style="background-color: rgb(0, 0, 0);">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                
+                                <!-- <li class="text-light text-right">Rs <%=product[i].price%>/- </li> -->
+                            </ul>
+                            <a href="/view-details?id=<%=product[i]._id%>" class="h2 text-decoration-none text-light"><%=product[i].name%></a>
+                            <p class="card-text text-light">
+                                <%=product[i].description%>
+                            </p> 
+                            
+                               <% const categoryItem = category.find(cat => cat.name === product[i].category); %>
+                                <%if(categoryItem && categoryItem.discountPercentage!=0){%>
+                                    
+                                    <!-- <% let value = product[i].price - product[i].price*categoryItem.discountPercentage/100 %> -->
+                                        <i class="text-light"><b style="color: rgb(240, 255, 155);">Rs. <%=product[i].price%>/-</b></i><br>
+                                
+                                    <del class="text-light"><a>Rs. <%= product[i].actualPrice %>/-</a></del>                                        
+                                    <i class="text-light">(<%=categoryItem.discountPercentage%>% off)</i>
+                                
+                                <%}else{%>
+                                   <i class="text-light"><b style="color: rgb(240, 255, 155);">Rs. <%= product[i].actualPrice %>/-</b></i>
+                                <%}%>
+
+
+
+                        </div>
+                    </div>
+                </div>
+            <%}%>   
+        </div>
+
+
+                <div class="row pb-3">
+                    <div class="col-12" id="pgnt" style="display: block;">
+                        <nav>
+                            <ul class="pagination justify-content-center">
+                                <% for(i=0;i<pageCount;i++){%>
+                                    <!-- <li class="page-item " id="<%-i%>"><a class="page-link"
+                                            onclick="updatePage('<%-i%>')" style="color: #000000;"><%-i+1%></a></li> -->
+                                            <li class="page-item" id="<%-i%>">
+                                                <a class="page-link" onclick="updatePage('<%-i%>')" style="color: #ffffff;"
+                                                  onmouseover="this.style.backgroundColor = '#000000';"
+                                                  onmouseout="this.style.backgroundColor = '#808080';">
+                                                  <%-i+1%>
+                                                </a>
+                                            </li>
+                                    <%}%>
+                            </ul>
+                        </nav>
+                    </div>  
+                </div>
+            </div>
+            <!-- Shop Product End --></form>
+        </div>
+    </div>
+    <!-- Shop End -->
+
+<script>
+function filter(sort){
+let undefined = sort
+var sort = document.getElementById('sort').value
+            var search = document.getElementById('search').value
+updatepage()
+
+}
+</script>
+
+
+    <script>
+        console.log('itrufysvdmhg');
+        let page = 0
+        function updatePage(pg = 0) {
+            console.log('rtjhihughg');
+            page = pg
+            console.log(page);
+            pageNo = document.getElementsByClassName('page-item')
+            for (let key of pageNo) { key.classList.remove('active') }
+            document.getElementById(page).classList.add('active')
+            update()
+        }
+        function update() {
+            console.log('litugbh');
+            var elements = document.getElementsByClassName("category");
+            var limit = document.getElementById('limit').value
+            var sort = document.getElementById('sort').value
+            var search = document.getElementById('search').value
+            var arr = '';
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].checked) {
+                    arr = [...arr, elements[i].value]
+                }
+            }
+            console.log(arr + '\n' + limit + '\n' + sort + '\n' + search + '\n' + page);
+            $.ajax({
+                url: '/loadShop',
+                type: 'GET',
+                data: { category: arr, limit: limit, sort: sort, search: search, page: page, ajax: true },
+                success: function (data) {
+                    console.log(data);
+                    if (data.pageCount == 1) {
+                        document.getElementById('pgnt').style.display = 'none';
+                    } else {
+                        document.getElementById('pgnt').style.display = 'block';
+                    }
+                    product = data.products
+                    var offer = data.offer
+                    document.getElementById('products').innerHTML = `
+    ${product.map((productItem) => `
+
+        
+
+        <div class="col-12 col-md-4 mb-4">
+                    <div class="card h-100">
+                        <a href="/view-details?id=${productItem._id}">
+                            <img src="/uploads/${productItem.image[0]}" class="card-img-top" alt="...">
+                        </a>
+                        <div class="card-body" style="background-color: rgb(0, 0, 0);">
+                            <ul class="list-unstyled d-flex justify-content-between">
+                                    
+                            </ul>
+                            <a href="/view-details?id=${productItem._id}" class="h2 text-decoration-none text-light">${productItem.name}</a>
+                            <p class="card-text text-light">
+                                ${productItem.description}
+                            </p>
+                            
+                             const categoryItem = category.find(cat => cat.name === product[i].category); 
+                                if(categoryItem && categoryItem.discountPercentage!=0){
+                                    
+                                        <i class="text-light"><b style="color: rgb(240, 255, 155);">Rs. ${product[i].Price}/-</b></i><br>
+                                
+                                    <del class="text-light"><a>Rs. ${product[i].actualPrice}/-</a></del>                                        
+                                    <i class="text-light">(${categoryItem.discountPercentage}% off)</i>
+                                
+                                else{
+                                   <i class="text-light"><b style="color: rgb(240, 255, 155);">Rs. ${product[i].actualPrice}/-</b></i>
+                                }
+                            
+                                                        
+                        </div>
+                    </div>
+                </div>
+
+    `).join('')}
+`;
+                    console.log(data.pageCount);
+                    if (data.pageCount > 1) {
+                        console.log('gte');
+                        document.getElementById('pgnt').innerHTML = `
+    <nav>
+        <ul class="pagination justify-content-center">
+            ${Array(data.pageCount).fill().map((_, index) => `
+                <li class="page-item pg" id="${index}">
+                    <a class="page-link" onclick="updatePage('${index}')">${index + 1}</a>
+                </li>
+            `).join('')}
+        </ul>
+    </nav>
+`;
+                    } else {
+                        if (data.page != 0) {
+                            updatePage()
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <%- include('../layouts/footer.ejs') %>

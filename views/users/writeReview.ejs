@@ -1,0 +1,101 @@
+<%- include('../layouts/header.ejs') %>
+
+
+<style>
+
+.review-container {
+  position: relative;
+}
+
+.review-textarea {
+  width: 100%;
+  height: 75px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #333;
+  resize: none;
+}
+
+.review-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+</style>
+
+
+<br>
+<br>
+
+<div class="container" style="max-width:800px;">
+  <p class="text-white"><b>Dear <span class="fs-5 text-light"></span name="user">
+    <%=user%>, </span></b><br><span class="text-black fs-6"> Thank you for your recent purchase with TIME-Shift.! We'd love to hear about your experience with us; you can leave us a review below. </span>
+  </p>
+  <input type="hidden" value="<%=user%>" name="user">
+
+
+
+  <% for(let i=0;i<orderDatas.products.item.length;i++){%>
+    <div class="alert alert-secondary alert-dismissible">
+      <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> -->
+
+
+      <div class="d-flex">
+        <div>
+          <img src="/uploads/<%=orderDatas.products.item[i].productId.image[0]%>" class="img-fluid" alt="lol"
+            width="150px" height="150px" style="border:solid 2px black; border-radius:20px">
+        </div>
+
+        <!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ea, eveniet.</p> -->
+
+
+        <div>
+          <p class="text-dark ms-5 fs-5">
+            <b><%=orderDatas.products.item[i].productId.name %></b>
+          </p>
+
+          <!-- <textarea class="ms-5" placeholder="Leave a review here"
+            id="<%=orderDatas.products.item[i].productId._id %>" required></textarea><br> -->
+
+            <div class="review-container ms-5">
+              <textarea class="review-textarea" placeholder="Leave a review here"
+                id="<%=orderDatas.products.item[i].productId._id %>" required></textarea>
+            </div>
+
+          <button onclick="del('<%=orderDatas.products.item[i].productId._id%>',event)"
+            class="btn btn-success ms-5">Post Review</button>
+
+        </div>
+      </div>
+
+    </div>
+    <% } %>
+      <a href="/userProfile" class="btn btn-dark">Go Back</a>
+</div>
+<br>
+<br>
+
+<script>
+  function del(id, event) {
+    rev = document.getElementById(id).value
+    id = id
+    var alertDiv = event.target.closest('.alert');
+    alertDiv.parentNode.removeChild(alertDiv);
+
+    $.ajax({
+      url: `/writeReview`,
+      type: 'POST',
+      data: { rev, id },
+
+    })
+
+  }
+
+</script>
+
+
+  <%- include('../layouts/footer.ejs') %>
